@@ -1,4 +1,9 @@
-#include "main.h"
+#include "utilities.h"
+void chb();
+void raskras(bool, int, enum Color, enum Color);
+void limitcolors(int);
+enum Color { RED, BLUE, GREEN, GRAY };
+Color Color_Check(char *CN);
 void Prepare();
 void PaintPixel(enum Color, int, struct pixel*);
 int NearColor(int, int);
