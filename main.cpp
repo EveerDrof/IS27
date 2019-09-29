@@ -5,6 +5,7 @@
 
 #include "konstantinov.h"
 #include "kharitonova.h"
+#include "vershinin.h"
 void help()
 {
     cout << "\nusage: \n";
@@ -31,7 +32,9 @@ int main(int argc, char** argv)
 		//Konstantinov
 		&& strcmp(argv[1], "chb") && strcmp(argv[1], "raskras") && strcmp(argv[1], "limitcolors")
 		//Kharitonova
-		&& strcmp(argv[1], "numtopic"))
+		&& strcmp(argv[1], "numtopic")
+		//Vershinin
+		&& strcmp(argv[1], "cutfrompic"))
     {
 		help();
 		return 1;
@@ -144,6 +147,20 @@ int main(int argc, char** argv)
 		}
 		NumToPic(argv);
 
+	}
+	if (!strcmp(argv[1], "cutfrompic"))
+	{
+		struct pointOfPixel point1, point2;
+
+		point1.x = atoi(argv[2]);
+		point1.y = atoi(argv[3]);
+		point2.x = atoi(argv[4]);
+		point2.y = atoi(argv[5]);
+
+		infile = argv[6];
+		outfile = argv[7];
+		cutFromPic(point1, point2);
+		return 0;
 	}
     return 0;
 }
