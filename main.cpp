@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "konstantinov.h"
+#include "kharitonova.h"
 void help()
 {
     cout << "\nusage: \n";
@@ -28,7 +29,9 @@ int main(int argc, char** argv)
   
     if(strcmp(argv[1],"resizev") && strcmp(argv[1],"resizeh") && strcmp(argv[1],"rotater") &&  strcmp(argv[1],"rotatel")
 		//Konstantinov
-		&& strcmp(argv[1], "chb") && strcmp(argv[1], "raskras") && strcmp(argv[1], "limitcolors"))
+		&& strcmp(argv[1], "chb") && strcmp(argv[1], "raskras") && strcmp(argv[1], "limitcolors")
+		//Kharitonova
+		&& strcmp(argv[1], "numtopic"))
     {
 		help();
 		return 1;
@@ -132,5 +135,15 @@ int main(int argc, char** argv)
 			limitcolors(atoi(argv[4]));
 
 		}
+	if (!strcmp(argv[1], "numtopic"))
+	{
+		if (argc < 3)
+		{
+			help();
+			return 1;
+		}
+		NumToPic(argv);
+
+	}
     return 0;
 }
