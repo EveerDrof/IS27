@@ -6,6 +6,7 @@
 #include "konstantinov.h"
 #include "kharitonova.h"
 #include "vershinin.h"
+#include "zachynyaev.h"
 void help()
 {
     cout << "\nusage: \n";
@@ -34,7 +35,10 @@ int main(int argc, char** argv)
 		//Kharitonova
 		&& strcmp(argv[1], "numtopic")
 		//Vershinin
-		&& strcmp(argv[1], "cutfrompic"))
+		&& strcmp(argv[1], "cutfrompic")
+		//Zachynyaev
+		&& strcmp(argv[1], "cutsizeh")
+		&& strcmp(argv[1], "cutsizev"))
     {
 		help();
 		return 1;
@@ -162,5 +166,31 @@ int main(int argc, char** argv)
 		cutFromPic(point1, point2);
 		return 0;
 	}
+	if (!strcmp(argv[1], "cutsizev"))
+	{
+		
+		pers = atoi(argv[2]);
+		infile = argv[3];
+		outfile = argv[4];
+		if (argc < 4)
+		{
+			help();
+			return 1;
+		}
+		cutsizev(pers);
+	}
+	if (!strcmp(argv[1], "cutsizeh"))
+	{
+		pers = atoi(argv[2]);
+		infile = argv[3];
+		outfile = argv[4];
+		if (argc < 4)
+		{
+			help();
+			return 1;
+		}
+		cutsizeh(pers);
+	}
+
     return 0;
 }
