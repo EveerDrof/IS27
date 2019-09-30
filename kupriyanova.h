@@ -4,8 +4,8 @@
 #include <iostream>
 #include <io.h>
 using namespace std;
-int main() {
-
+int picture() 
+{
 	FILE *out;
 	out = fopen("Img1.bmp", "rb");
 
