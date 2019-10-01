@@ -1,39 +1,4 @@
-#include "stdafx.h"
-#include <iostream>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
-#pragma warning(disable:4996)
-
-using namespace std;
-
-struct pixel
-{
-	unsigned char b;
-	unsigned char g;
-    unsigned char r;
-};
-
-struct pointOfPixel
-{
-	double x;
-	double y;
-};
-
-#pragma pack(push, 1)
-struct head
-{
-	char type[2];
-    unsigned int size;
-    unsigned int reserv;
-    unsigned int offset;
-    unsigned int head_size;
-	unsigned int width;
-    unsigned int height;
-    unsigned int end[7];
-};
-#pragma pack(pop)
+#include "utilities.h"
 
 struct pixel **p_in; 
 struct pixel **p_out; 
@@ -50,7 +15,7 @@ char *outfile;
 
 void lineshort(pointOfPixel, pointOfPixel, pointOfPixel, pointOfPixel, pixel );
 void lineinf(pointOfPixel, pointOfPixel, pixel);
-void circle(int, int, int, int, pixel);
+void circle(int, int, int, int, pixel);	
 void circle2(int, int, int, int, pixel);
 void filledcircle(int, int, int, pixel);
 
@@ -226,41 +191,41 @@ int main(int argc, char** argv)
 		infile = argv[9];
 		outfile = argv[10];
 		bool noyes;
-		cout << "\nХотите выбрать интерактивный режим?\n";
-		cout << "\n(в ином случае будет нарисована одна простая окружность с заданными в консольной строке параметрами)\n";
-		cout << "\n1 (интерактив) или 0 (одна окружность): "; cin >> noyes;
+		cout << "\nГ•Г®ГІГЁГІГҐ ГўГ»ГЎГ°Г ГІГј ГЁГ­ГІГҐГ°Г ГЄГІГЁГўГ­Г»Г© Г°ГҐГ¦ГЁГ¬?\n";
+		cout << "\n(Гў ГЁГ­Г®Г¬ Г±Г«ГіГ·Г ГҐ ГЎГіГ¤ГҐГІ Г­Г Г°ГЁГ±Г®ГўГ Г­Г  Г®Г¤Г­Г  ГЇГ°Г®Г±ГІГ Гї Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГј Г± Г§Г Г¤Г Г­Г­Г»Г¬ГЁ Гў ГЄГ®Г­Г±Г®Г«ГјГ­Г®Г© Г±ГІГ°Г®ГЄГҐ ГЇГ Г°Г Г¬ГҐГІГ°Г Г¬ГЁ)\n";
+		cout << "\n1 (ГЁГ­ГІГҐГ°Г ГЄГІГЁГў) ГЁГ«ГЁ 0 (Г®Г¤Г­Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГј): "; cin >> noyes;
 		read_file();
 
 		if (noyes)
 		{
-			int scenario; cout << "Доступные сценарии:\n\n";
-			cout << "1 - Рисование заканчивается, когда радиус, уменьшаясь, достигает определенного значения.\n";
-			cout << "2 - Рисование заканчивается, когда радиус, увеличиваясь, достигает определенного значения.\n";
-			cout << "3 - Рисование заканчивается, когда координата центра x, уменьшаясь, достигает определенного значения.\n";
-			cout << "4 - Рисование заканчивается, когда координата центра x, увеличиваясь, достигает определенного значения.\n";
-			cout << "5 - Рисование заканчивается, когда координата центра y, уменьшаясь, достигает определенного значения.\n";
-			cout << "6 - Рисование заканчивается, когда координата центра y, увеличиваясь, достигает определенного значения.\n";
-			cout << "7 - Рисование заканчивается, когда одно из значений R, G, B, уменьшаясь, достигает определенного значения.\n";
-			cout << "8 - Рисование заканчивается, когда одно из значений R, G, B, увеличиваясь, достигает определенного значения.\n";
-			cout << "9 - Рисование заканчивается, когда одно из значений R, G, уменьшаясь, достигает определенного значения.\n";
-			cout << "10 - Рисование заканчивается, когда одно из значений R, G, увеличиваясь, достигает определенного значения.\n";
-			cout << "11 - Рисование заканчивается, когда одно из значений R, B, уменьшаясь, достигает определенного значения.\n";
-			cout << "12 - Рисование заканчивается, когда одно из значений R, B, увеличиваясь, достигает определенного значения.\n";
-			cout << "13 - Рисование заканчивается, когда одно из значений G, B, уменьшаясь, достигает определенного значения.\n";
-			cout << "14 - Рисование заканчивается, когда одно из значений G, B, увеличиваясь, достигает определенного значения.\n";
-			cout << "15 - Рисование заканчивается, когда значение R, уменьшаясь, достигает определенного значения.\n";
-			cout << "16 - Рисование заканчивается, когда значение R, увеличиваясь, достигает определенного значения.\n";
-			cout << "17 - Рисование заканчивается, когда значение G, уменьшаясь, достигает определенного значения.\n";
-			cout << "18 - Рисование заканчивается, когда значение G, увеличиваясь, достигает определенного значения.\n";
-			cout << "19 - Рисование заканчивается, когда значение B, уменьшаясь, достигает определенного значения.\n";
-			cout << "20 - Рисование заканчивается, когда значение B, увеличиваясь, достигает определенного значения.\n";
-			cout << "21 - Рисование заканчивается, когда счетчик итератора достигает определенного значения.\n";
-			cout << "22 - Рисование заканчивается, когда значение Size, уменьшаясь, достигает определенного значения.\n";
-			cout << "23 - Рисование заканчивается, когда значение Size, увеличиваясь, достигает определенного значения.\n";
+			int scenario; cout << "Г„Г®Г±ГІГіГЇГ­Г»ГҐ Г±Г¶ГҐГ­Г Г°ГЁГЁ:\n\n";
+			cout << "1 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г°Г Г¤ГЁГіГ±, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "2 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г°Г Г¤ГЁГіГ±, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "3 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  x, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "4 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  x, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "5 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  y, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "6 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  y, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "7 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "8 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "9 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "10 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "11 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "12 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "13 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© G, B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "14 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© G, B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "15 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ R, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "16 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ R, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "17 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ G, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "18 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ G, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "19 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "20 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "21 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г±Г·ГҐГІГ·ГЁГЄ ГЁГІГҐГ°Г ГІГ®Г°Г  Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "22 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ Size, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "23 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ Size, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
 
-			cout << "\nВыберете сценарий: "; cin >> scenario;
+			cout << "\nГ‚Г»ГЎГҐГ°ГҐГІГҐ Г±Г¶ГҐГ­Г Г°ГЁГ©: "; cin >> scenario;
 
-			//Конечные значения для сценариев.
+			//ГЉГ®Г­ГҐГ·Г­Г»ГҐ Г§Г­Г Г·ГҐГ­ГЁГї Г¤Г«Гї Г±Г¶ГҐГ­Г Г°ГЁГҐГў.
 
 			int radend;
 			int x0end;
@@ -273,56 +238,56 @@ int main(int argc, char** argv)
 
 			if (scenario == 1 or scenario == 2)
 			{
-				cout << "Введите конечный радиус: "; cin >> radend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г»Г© Г°Г Г¤ГЁГіГ±: "; cin >> radend;
 			}
 			if (scenario == 3 or scenario == 4)
 			{
-				cout << "Введите конечную координату x: "; cin >> x0end;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­ГіГѕ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГі x: "; cin >> x0end;
 			}
 			if (scenario == 5 or scenario == 6)
 			{
-				cout << "Введите конечную координату y: "; cin >> y0end;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­ГіГѕ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГі y: "; cin >> y0end;
 			}
 			if (scenario == 7 or scenario == 8)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
-				cout << "Введите конечное значение G: "; cin >> Gend;
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 9 or scenario == 10)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
-				cout << "Введите конечное значение G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
 			}
 			if (scenario == 11 or scenario == 12)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 13 or scenario == 14)
 			{
-				cout << "Введите конечное значение G: "; cin >> Gend;
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 15 or scenario == 16)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
 			}
 			if (scenario == 17 or scenario == 18)
 			{
-				cout << "Введите конечное значение G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
 			}
 			if (scenario == 19 or scenario == 20)
 			{
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 21)
 			{
-				cout << "Введите количество повторений: "; cin >> Iterend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЇГ®ГўГІГ®Г°ГҐГ­ГЁГ©: "; cin >> Iterend;
 			}
 			if (scenario == 22 or scenario == 23)
 			{
-				cout << "Введите конечное значение Size: "; cin >> Sizeend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ Size: "; cin >> Sizeend;
 			}
 
 			int stepX0 = 0;
@@ -341,70 +306,70 @@ int main(int argc, char** argv)
 			double cBA, cBB, cBC;
 			double SizeA, SizeB, SizeC;
 
-			bool ez; cout << "\nХотите использовать в рисовании линейные преобразования или сложные формулы? (1 или 0): "; cin >> ez;
-			cout << "\nЗнак следующих переменных имеет большое значение и определяет направление изменения!\n\n";
+			bool ez; cout << "\nГ•Г®ГІГЁГІГҐ ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ ГІГј Гў Г°ГЁГ±Г®ГўГ Г­ГЁГЁ Г«ГЁГ­ГҐГ©Г­Г»ГҐ ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГї ГЁГ«ГЁ Г±Г«Г®Г¦Г­Г»ГҐ ГґГ®Г°Г¬ГіГ«Г»? (1 ГЁГ«ГЁ 0): "; cin >> ez;
+			cout << "\nГ‡Г­Г ГЄ Г±Г«ГҐГ¤ГіГѕГ№ГЁГµ ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»Гµ ГЁГ¬ГҐГҐГІ ГЎГ®Г«ГјГёГ®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ ГЁ Г®ГЇГ°ГҐГ¤ГҐГ«ГїГҐГІ Г­Г ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї!\n\n";
 			if (ez)
 			{
-				cout << "Введите stepX0 (шаг изменения координаты x центра окружности): "; cin >> stepX0;
-				cout << "Введите stepY0 (шаг изменения координаты y центра окружности): "; cin >> stepY0;
-				cout << "Введите stepR (шаг изменения радиуса окружности): "; cin >> stepR;
-				cout << "Введите stepSize (шаг изменения радиуса окружности): "; cin >> stepSize;
-				cout << "Введите stepColorR (шаг изменения красного спектра цвета): "; cin >> stepColorR;
-				cout << "Введите stepColorG (шаг изменения зелёного спектра цвета): "; cin >> stepColorG;
-				cout << "Введите stepColorB (шаг изменения синего спектра цвета): "; cin >> stepColorB;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepX0 (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» x Г¶ГҐГ­ГІГ°Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepX0;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepY0 (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» y Г¶ГҐГ­ГІГ°Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepY0;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepR (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г°Г Г¤ГЁГіГ±Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepR;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepSize (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г°Г Г¤ГЁГіГ±Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepSize;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepColorR (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЄГ°Г Г±Г­Г®ГЈГ® Г±ГЇГҐГЄГІГ°Г  Г¶ГўГҐГІГ ): "; cin >> stepColorR;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepColorG (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г§ГҐГ«ЕѕГ­Г®ГЈГ® Г±ГЇГҐГЄГІГ°Г  Г¶ГўГҐГІГ ): "; cin >> stepColorG;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepColorB (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г±ГЁГ­ГҐГЈГ® Г±ГЇГҐГЄГІГ°Г  Г¶ГўГҐГІГ ): "; cin >> stepColorB;
 			}
 			else
 			{
-				cout << "\nФормула для x0:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї x0:\n";
 				cout << "x0=round(pow(A*x0, B)+C)\n";
 				cout << "A = "; cin >> x0A;
 				cout << "B = "; cin >> x0B;
 				cout << "C = "; cin >> x0C;
 
-				cout << "\nФормула для y0:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї y0:\n";
 				cout << "y0=round(pow(A*y0, B)+C)\n";
 				cout << "A = "; cin >> y0A;
 				cout << "B = "; cin >> y0B;
 				cout << "C = "; cin >> y0C;
 
-				cout << "\nФормула для R:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї R:\n";
 				cout << "R=round(pow(A*R, B)+C)\n";
 				cout << "A = "; cin >> RA;
 				cout << "B = "; cin >> RB;
 				cout << "C = "; cin >> RC;
 
-				cout << "\nФормула для Size:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї Size:\n";
 				cout << "Size=round(pow(A*Size, B)+C)\n";
 				cout << "A = "; cin >> SizeA;
 				cout << "B = "; cin >> SizeB;
 				cout << "C = "; cin >> SizeC;
 
-				cout << "\nФормула для color.r:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї color.r:\n";
 				cout << "color.r=round(pow(A*color.r, B)+C)\n";
 				cout << "A = "; cin >> cRA;
 				cout << "B = "; cin >> cRB;
 				cout << "C = "; cin >> cRC;
 
-				cout << "\nФормула для color.g:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї color.g:\n";
 				cout << "color.g=round(pow(A*color.g, B)+C)\n";
 				cout << "A = "; cin >> cGA;
 				cout << "B = "; cin >> cGB;
 				cout << "C = "; cin >> cGC;
 
-				cout << "\nФормула для color.b:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї color.b:\n";
 				cout << "color.b=round(pow(A*color.b, B)+C)\n";
 				cout << "A = "; cin >> cBA;
 				cout << "B = "; cin >> cBB;
 				cout << "C = "; cin >> cBC;
 			}
 
-			cout << "\nЕсли что-то пошло не по плану и получился бесконечный цикл, используйте сочитание клавиш Ctrl+C.\n";
+			cout << "\nГ…Г±Г«ГЁ Г·ГІГ®-ГІГ® ГЇГ®ГёГ«Г® Г­ГҐ ГЇГ® ГЇГ«Г Г­Гі ГЁ ГЇГ®Г«ГіГ·ГЁГ«Г±Гї ГЎГҐГ±ГЄГ®Г­ГҐГ·Г­Г»Г© Г¶ГЁГЄГ«, ГЁГ±ГЇГ®Г«ГјГ§ГіГ©ГІГҐ Г±Г®Г·ГЁГІГ Г­ГЁГҐ ГЄГ«Г ГўГЁГё Ctrl+C.\n";
 
 			if (scenario == 1)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					R > radend; // условия
-					R += stepR, Size += stepSize, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					R > radend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, Size += stepSize, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -421,9 +386,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 2)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					R < radend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					R < radend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -440,9 +405,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 3)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					x0 >= x0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					x0 >= x0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -459,9 +424,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 4)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					x0 <= x0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					x0 <= x0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -478,9 +443,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 5)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					y0 >= y0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					y0 >= y0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -497,9 +462,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 6)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					y0 <= y0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					y0 <= y0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -516,9 +481,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 7)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r >= Rend && color.g >= Gend && color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend && color.g >= Gend && color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -535,9 +500,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 8)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r <= Rend && color.g <= Gend && color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend && color.g <= Gend && color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -554,9 +519,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 9)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r >= Rend && color.g >= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend && color.g >= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -573,9 +538,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 10)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r <= Rend && color.g <= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend && color.g <= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -592,9 +557,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 11)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r >= Rend && color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend && color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -611,9 +576,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 12)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r <= Rend && color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend && color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -630,9 +595,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 13)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.g >= Gend && color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g >= Gend && color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -649,9 +614,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 14)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.g <= Gend && color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g <= Gend && color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -668,9 +633,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 15)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r >= Rend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -687,9 +652,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 16)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r <= Rend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -706,9 +671,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 17)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.g >= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g >= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -725,9 +690,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 18)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.g <= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g <= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -744,9 +709,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 19)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -763,9 +728,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 20)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -783,9 +748,9 @@ int main(int argc, char** argv)
 			if (scenario == 21)
 			{
 				int iteration = 0;
-				for (x0, y0, R, color.r, color.g, color.b, Size, iteration; // переменные
-					iteration < Iterend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, iteration++, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size, iteration; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					iteration < Iterend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, iteration++, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -802,9 +767,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 22)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					Size >= Sizeend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					Size >= Sizeend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -821,9 +786,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 23)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					Size <= Sizeend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					Size <= Sizeend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle(x0, y0, R, Size, color);
 					if (!ez)
@@ -863,41 +828,41 @@ int main(int argc, char** argv)
 		infile = argv[9];
 		outfile = argv[10];
 		bool noyes; 
-		cout << "\nХотите выбрать интерактивный режим?\n";
-		cout << "\n(в ином случае будет нарисована одна простая окружность с заданными в консольной строке параметрами)\n";
-		cout << "\n1 (интерактив) или 0 (одна окружность): "; cin >> noyes;
+		cout << "\nГ•Г®ГІГЁГІГҐ ГўГ»ГЎГ°Г ГІГј ГЁГ­ГІГҐГ°Г ГЄГІГЁГўГ­Г»Г© Г°ГҐГ¦ГЁГ¬?\n";
+		cout << "\n(Гў ГЁГ­Г®Г¬ Г±Г«ГіГ·Г ГҐ ГЎГіГ¤ГҐГІ Г­Г Г°ГЁГ±Г®ГўГ Г­Г  Г®Г¤Г­Г  ГЇГ°Г®Г±ГІГ Гї Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГј Г± Г§Г Г¤Г Г­Г­Г»Г¬ГЁ Гў ГЄГ®Г­Г±Г®Г«ГјГ­Г®Г© Г±ГІГ°Г®ГЄГҐ ГЇГ Г°Г Г¬ГҐГІГ°Г Г¬ГЁ)\n";
+		cout << "\n1 (ГЁГ­ГІГҐГ°Г ГЄГІГЁГў) ГЁГ«ГЁ 0 (Г®Г¤Г­Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГј): "; cin >> noyes;
 		read_file();
 
 		if (noyes)
 		{
-			int scenario; cout << "Доступные сценарии:\n\n";
-			cout << "1 - Рисование заканчивается, когда радиус, уменьшаясь, достигает определенного значения.\n";
-			cout << "2 - Рисование заканчивается, когда радиус, увеличиваясь, достигает определенного значения.\n";
-			cout << "3 - Рисование заканчивается, когда координата центра x, уменьшаясь, достигает определенного значения.\n";
-			cout << "4 - Рисование заканчивается, когда координата центра x, увеличиваясь, достигает определенного значения.\n";
-			cout << "5 - Рисование заканчивается, когда координата центра y, уменьшаясь, достигает определенного значения.\n";
-			cout << "6 - Рисование заканчивается, когда координата центра y, увеличиваясь, достигает определенного значения.\n";
-			cout << "7 - Рисование заканчивается, когда одно из значений R, G, B, уменьшаясь, достигает определенного значения.\n";
-			cout << "8 - Рисование заканчивается, когда одно из значений R, G, B, увеличиваясь, достигает определенного значения.\n";
-			cout << "9 - Рисование заканчивается, когда одно из значений R, G, уменьшаясь, достигает определенного значения.\n";
-			cout << "10 - Рисование заканчивается, когда одно из значений R, G, увеличиваясь, достигает определенного значения.\n";
-			cout << "11 - Рисование заканчивается, когда одно из значений R, B, уменьшаясь, достигает определенного значения.\n";
-			cout << "12 - Рисование заканчивается, когда одно из значений R, B, увеличиваясь, достигает определенного значения.\n";
-			cout << "13 - Рисование заканчивается, когда одно из значений G, B, уменьшаясь, достигает определенного значения.\n";
-			cout << "14 - Рисование заканчивается, когда одно из значений G, B, увеличиваясь, достигает определенного значения.\n";
-			cout << "15 - Рисование заканчивается, когда значение R, уменьшаясь, достигает определенного значения.\n";
-			cout << "16 - Рисование заканчивается, когда значение R, увеличиваясь, достигает определенного значения.\n";
-			cout << "17 - Рисование заканчивается, когда значение G, уменьшаясь, достигает определенного значения.\n";
-			cout << "18 - Рисование заканчивается, когда значение G, увеличиваясь, достигает определенного значения.\n";
-			cout << "19 - Рисование заканчивается, когда значение B, уменьшаясь, достигает определенного значения.\n";
-			cout << "20 - Рисование заканчивается, когда значение B, увеличиваясь, достигает определенного значения.\n";
-			cout << "21 - Рисование заканчивается, когда счетчик итератора достигает определенного значения.\n";
-			cout << "22 - Рисование заканчивается, когда значение Size, уменьшаясь, достигает определенного значения.\n";
-			cout << "23 - Рисование заканчивается, когда значение Size, увеличиваясь, достигает определенного значения.\n";
+			int scenario; cout << "Г„Г®Г±ГІГіГЇГ­Г»ГҐ Г±Г¶ГҐГ­Г Г°ГЁГЁ:\n\n";
+			cout << "1 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г°Г Г¤ГЁГіГ±, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "2 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г°Г Г¤ГЁГіГ±, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "3 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  x, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "4 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  x, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "5 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  y, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "6 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  y, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "7 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "8 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "9 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "10 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "11 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "12 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "13 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© G, B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "14 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© G, B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "15 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ R, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "16 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ R, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "17 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ G, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "18 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ G, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "19 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "20 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "21 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г±Г·ГҐГІГ·ГЁГЄ ГЁГІГҐГ°Г ГІГ®Г°Г  Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "22 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ Size, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "23 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ Size, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
 
-			cout << "\nВыберете сценарий: "; cin >> scenario;
+			cout << "\nГ‚Г»ГЎГҐГ°ГҐГІГҐ Г±Г¶ГҐГ­Г Г°ГЁГ©: "; cin >> scenario;
 
-			//Конечные значения для сценариев.
+			//ГЉГ®Г­ГҐГ·Г­Г»ГҐ Г§Г­Г Г·ГҐГ­ГЁГї Г¤Г«Гї Г±Г¶ГҐГ­Г Г°ГЁГҐГў.
 
 			int radend;
 			int x0end;
@@ -910,56 +875,56 @@ int main(int argc, char** argv)
 
 			if (scenario == 1 or scenario == 2) 
 			{ 
-				cout << "Введите конечный радиус: "; cin >> radend; 
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г»Г© Г°Г Г¤ГЁГіГ±: "; cin >> radend; 
 			}
 			if (scenario == 3 or scenario == 4) 
 			{ 
-				cout << "Введите конечную координату x: "; cin >> x0end; 
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­ГіГѕ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГі x: "; cin >> x0end; 
 			}
 			if (scenario == 5 or scenario == 6) 
 			{ 
-				cout << "Введите конечную координату y: "; cin >> y0end; 
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­ГіГѕ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГі y: "; cin >> y0end; 
 			}
 			if (scenario == 7 or scenario == 8) 
 			{ 
-				cout << "Введите конечное значение R: "; cin >> Rend;
-				cout << "Введите конечное значение G: "; cin >> Gend;
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 9 or scenario == 10)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
-				cout << "Введите конечное значение G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
 			}
 			if (scenario == 11 or scenario == 12)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 13 or scenario == 14)
 			{
-				cout << "Введите конечное значение G: "; cin >> Gend;
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 15 or scenario == 16)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
 			}
 			if (scenario == 17 or scenario == 18)
 			{
-				cout << "Введите конечное значение G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
 			}
 			if (scenario == 19 or scenario == 20)
 			{
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 21)
 			{
-				cout << "Введите количество повторений: "; cin >> Iterend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЇГ®ГўГІГ®Г°ГҐГ­ГЁГ©: "; cin >> Iterend;
 			}
 			if (scenario == 22 or scenario == 23)
 			{
-				cout << "Введите конечное значение Size: "; cin >> Sizeend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ Size: "; cin >> Sizeend;
 			}
 
 			int stepX0 = 0;
@@ -978,70 +943,70 @@ int main(int argc, char** argv)
 			double cBA, cBB, cBC;
 			double SizeA, SizeB, SizeC;
 
-			bool ez; cout << "\nХотите использовать в рисовании линейные преобразования или сложные формулы? (1 или 0): "; cin >> ez;
-			cout << "\nЗнак следующих переменных имеет большое значение и определяет направление изменения!\n\n";
+			bool ez; cout << "\nГ•Г®ГІГЁГІГҐ ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ ГІГј Гў Г°ГЁГ±Г®ГўГ Г­ГЁГЁ Г«ГЁГ­ГҐГ©Г­Г»ГҐ ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГї ГЁГ«ГЁ Г±Г«Г®Г¦Г­Г»ГҐ ГґГ®Г°Г¬ГіГ«Г»? (1 ГЁГ«ГЁ 0): "; cin >> ez;
+			cout << "\nГ‡Г­Г ГЄ Г±Г«ГҐГ¤ГіГѕГ№ГЁГµ ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»Гµ ГЁГ¬ГҐГҐГІ ГЎГ®Г«ГјГёГ®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ ГЁ Г®ГЇГ°ГҐГ¤ГҐГ«ГїГҐГІ Г­Г ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї!\n\n";
 			if (ez)
 			{
-				cout << "Введите stepX0 (шаг изменения координаты x центра окружности): "; cin >> stepX0;
-				cout << "Введите stepY0 (шаг изменения координаты y центра окружности): "; cin >> stepY0;
-				cout << "Введите stepR (шаг изменения радиуса окружности): "; cin >> stepR;
-				cout << "Введите stepSize (шаг изменения радиуса окружности): "; cin >> stepSize;
-				cout << "Введите stepColorR (шаг изменения красного спектра цвета): "; cin >> stepColorR;
-				cout << "Введите stepColorG (шаг изменения зелёного спектра цвета): "; cin >> stepColorG;
-				cout << "Введите stepColorB (шаг изменения синего спектра цвета): "; cin >> stepColorB;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepX0 (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» x Г¶ГҐГ­ГІГ°Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepX0;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepY0 (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» y Г¶ГҐГ­ГІГ°Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepY0;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepR (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г°Г Г¤ГЁГіГ±Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepR;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepSize (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г°Г Г¤ГЁГіГ±Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepSize;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepColorR (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЄГ°Г Г±Г­Г®ГЈГ® Г±ГЇГҐГЄГІГ°Г  Г¶ГўГҐГІГ ): "; cin >> stepColorR;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepColorG (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г§ГҐГ«ЕѕГ­Г®ГЈГ® Г±ГЇГҐГЄГІГ°Г  Г¶ГўГҐГІГ ): "; cin >> stepColorG;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepColorB (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г±ГЁГ­ГҐГЈГ® Г±ГЇГҐГЄГІГ°Г  Г¶ГўГҐГІГ ): "; cin >> stepColorB;
 			}
 			else
 			{
-				cout << "\nФормула для x0:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї x0:\n";
 				cout << "x0=round(pow(A*x0, B)+C)\n";
 				cout << "A = "; cin >> x0A;
 				cout << "B = "; cin >> x0B;
 				cout << "C = "; cin >> x0C;
 
-				cout << "\nФормула для y0:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї y0:\n";
 				cout << "y0=round(pow(A*y0, B)+C)\n";
 				cout << "A = "; cin >> y0A;
 				cout << "B = "; cin >> y0B;
 				cout << "C = "; cin >> y0C;
 
-				cout << "\nФормула для R:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї R:\n";
 				cout << "R=round(pow(A*R, B)+C)\n";
 				cout << "A = "; cin >> RA;
 				cout << "B = "; cin >> RB;
 				cout << "C = "; cin >> RC;
 
-				cout << "\nФормула для Size:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї Size:\n";
 				cout << "Size=round(pow(A*Size, B)+C)\n";
 				cout << "A = "; cin >> SizeA;
 				cout << "B = "; cin >> SizeB;
 				cout << "C = "; cin >> SizeC;
 
-				cout << "\nФормула для color.r:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї color.r:\n";
 				cout << "color.r=round(pow(A*color.r, B)+C)\n";
 				cout << "A = "; cin >> cRA;
 				cout << "B = "; cin >> cRB;
 				cout << "C = "; cin >> cRC;
 
-				cout << "\nФормула для color.g:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї color.g:\n";
 				cout << "color.g=round(pow(A*color.g, B)+C)\n";
 				cout << "A = "; cin >> cGA;
 				cout << "B = "; cin >> cGB;
 				cout << "C = "; cin >> cGC;
 
-				cout << "\nФормула для color.b:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї color.b:\n";
 				cout << "color.b=round(pow(A*color.b, B)+C)\n";
 				cout << "A = "; cin >> cBA;
 				cout << "B = "; cin >> cBB;
 				cout << "C = "; cin >> cBC;
 			}
 
-			cout << "\nЕсли что-то пошло не по плану и получился бесконечный цикл, используйте сочитание клавиш Ctrl+C.\n";
+			cout << "\nГ…Г±Г«ГЁ Г·ГІГ®-ГІГ® ГЇГ®ГёГ«Г® Г­ГҐ ГЇГ® ГЇГ«Г Г­Гі ГЁ ГЇГ®Г«ГіГ·ГЁГ«Г±Гї ГЎГҐГ±ГЄГ®Г­ГҐГ·Г­Г»Г© Г¶ГЁГЄГ«, ГЁГ±ГЇГ®Г«ГјГ§ГіГ©ГІГҐ Г±Г®Г·ГЁГІГ Г­ГЁГҐ ГЄГ«Г ГўГЁГё Ctrl+C.\n";
 
 			if (scenario == 1)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					R > radend; // условия
-					R += stepR, Size += stepSize, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					R > radend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, Size += stepSize, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1058,9 +1023,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 2)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					R < radend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					R < radend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1077,9 +1042,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 3)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					x0 >= x0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					x0 >= x0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1096,9 +1061,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 4)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					x0 <= x0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					x0 <= x0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1115,9 +1080,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 5)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					y0 >= y0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					y0 >= y0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1134,9 +1099,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 6)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					y0 <= y0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					y0 <= y0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1153,9 +1118,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 7)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r >= Rend && color.g >= Gend && color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend && color.g >= Gend && color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1172,9 +1137,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 8)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r <= Rend && color.g <= Gend && color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend && color.g <= Gend && color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1191,9 +1156,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 9)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r >= Rend && color.g >= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend && color.g >= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1210,9 +1175,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 10)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r <= Rend && color.g <= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend && color.g <= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1229,9 +1194,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 11)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r >= Rend && color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend && color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1248,9 +1213,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 12)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r <= Rend && color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend && color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1267,9 +1232,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 13)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.g >= Gend && color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g >= Gend && color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1286,9 +1251,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 14)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.g <= Gend && color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g <= Gend && color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1305,9 +1270,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 15)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r >= Rend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1324,9 +1289,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 16)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.r <= Rend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1343,9 +1308,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 17)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.g >= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g >= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1362,9 +1327,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 18)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.g <= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g <= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1381,9 +1346,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 19)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1400,9 +1365,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 20)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1420,9 +1385,9 @@ int main(int argc, char** argv)
 			if (scenario == 21)
 			{
 				int iteration = 0;
-				for (x0, y0, R, color.r, color.g, color.b, Size, iteration ; // переменные
-					iteration < Iterend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, iteration++, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size, iteration ; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					iteration < Iterend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, iteration++, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1439,9 +1404,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 22)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					Size >= Sizeend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					Size >= Sizeend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1458,9 +1423,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 23)
 			{
-				for (x0, y0, R, color.r, color.g, color.b, Size; // переменные
-					Size <= Sizeend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, Size; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					Size <= Sizeend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, Size += stepSize) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					circle2(x0, y0, R, Size, color);
 					if (!ez)
@@ -1500,38 +1465,38 @@ int main(int argc, char** argv)
 		outfile = argv[9];
 
 		bool noyes; 
-		cout << "\nХотите выбрать интерактивный режим?\n";
-		cout << "\n(в ином случае будет нарисована одна простая окружность с заданными в консольной строке параметрами)\n";
-		cout << "\n1 (интерактив) или 0 (одна окружность): "; cin >> noyes;
+		cout << "\nГ•Г®ГІГЁГІГҐ ГўГ»ГЎГ°Г ГІГј ГЁГ­ГІГҐГ°Г ГЄГІГЁГўГ­Г»Г© Г°ГҐГ¦ГЁГ¬?\n";
+		cout << "\n(Гў ГЁГ­Г®Г¬ Г±Г«ГіГ·Г ГҐ ГЎГіГ¤ГҐГІ Г­Г Г°ГЁГ±Г®ГўГ Г­Г  Г®Г¤Г­Г  ГЇГ°Г®Г±ГІГ Гї Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГј Г± Г§Г Г¤Г Г­Г­Г»Г¬ГЁ Гў ГЄГ®Г­Г±Г®Г«ГјГ­Г®Г© Г±ГІГ°Г®ГЄГҐ ГЇГ Г°Г Г¬ГҐГІГ°Г Г¬ГЁ)\n";
+		cout << "\n1 (ГЁГ­ГІГҐГ°Г ГЄГІГЁГў) ГЁГ«ГЁ 0 (Г®Г¤Г­Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГј): "; cin >> noyes;
 		read_file();
 
 		if (noyes)
 		{
-			int scenario; cout << "Доступные сценарии:\n\n";
-			cout << "1 - Рисование заканчивается, когда радиус, уменьшаясь, достигает определенного значения.\n";
-			cout << "2 - Рисование заканчивается, когда радиус, увеличиваясь, достигает определенного значения.\n";
-			cout << "3 - Рисование заканчивается, когда координата центра x, уменьшаясь, достигает определенного значения.\n";
-			cout << "4 - Рисование заканчивается, когда координата центра x, увеличиваясь, достигает определенного значения.\n";
-			cout << "5 - Рисование заканчивается, когда координата центра y, уменьшаясь, достигает определенного значения.\n";
-			cout << "6 - Рисование заканчивается, когда координата центра y, увеличиваясь, достигает определенного значения.\n";
-			cout << "7 - Рисование заканчивается, когда одно из значений R, G, B, уменьшаясь, достигает определенного значения.\n";
-			cout << "8 - Рисование заканчивается, когда одно из значений R, G, B, увеличиваясь, достигает определенного значения.\n";
-			cout << "9 - Рисование заканчивается, когда одно из значений R, G, уменьшаясь, достигает определенного значения.\n";
-			cout << "10 - Рисование заканчивается, когда одно из значений R, G, увеличиваясь, достигает определенного значения.\n";
-			cout << "11 - Рисование заканчивается, когда одно из значений R, B, уменьшаясь, достигает определенного значения.\n";
-			cout << "12 - Рисование заканчивается, когда одно из значений R, B, увеличиваясь, достигает определенного значения.\n";
-			cout << "13 - Рисование заканчивается, когда одно из значений G, B, уменьшаясь, достигает определенного значения.\n";
-			cout << "14 - Рисование заканчивается, когда одно из значений G, B, увеличиваясь, достигает определенного значения.\n";
-			cout << "15 - Рисование заканчивается, когда значение R, уменьшаясь, достигает определенного значения.\n";
-			cout << "16 - Рисование заканчивается, когда значение R, увеличиваясь, достигает определенного значения.\n";
-			cout << "17 - Рисование заканчивается, когда значение G, уменьшаясь, достигает определенного значения.\n";
-			cout << "18 - Рисование заканчивается, когда значение G, увеличиваясь, достигает определенного значения.\n";
-			cout << "19 - Рисование заканчивается, когда значение B, уменьшаясь, достигает определенного значения.\n";
-			cout << "20 - Рисование заканчивается, когда значение B, увеличиваясь, достигает определенного значения.\n";
-			cout << "21 - Рисование заканчивается, когда счетчик итератора достигает определенного значения.\n";
-			cout << "\nВыберете сценарий: "; cin >> scenario;
+			int scenario; cout << "Г„Г®Г±ГІГіГЇГ­Г»ГҐ Г±Г¶ГҐГ­Г Г°ГЁГЁ:\n\n";
+			cout << "1 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г°Г Г¤ГЁГіГ±, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "2 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г°Г Г¤ГЁГіГ±, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "3 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  x, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "4 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  x, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "5 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  y, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "6 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ  Г¶ГҐГ­ГІГ°Г  y, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "7 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "8 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "9 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "10 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, G, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "11 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "12 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© R, B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "13 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© G, B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "14 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г®Г¤Г­Г® ГЁГ§ Г§Г­Г Г·ГҐГ­ГЁГ© G, B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "15 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ R, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "16 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ R, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "17 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ G, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "18 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ G, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "19 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ B, ГіГ¬ГҐГ­ГјГёГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "20 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г§Г­Г Г·ГҐГ­ГЁГҐ B, ГіГўГҐГ«ГЁГ·ГЁГўГ ГїГ±Гј, Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "21 - ГђГЁГ±Г®ГўГ Г­ГЁГҐ Г§Г ГЄГ Г­Г·ГЁГўГ ГҐГІГ±Гї, ГЄГ®ГЈГ¤Г  Г±Г·ГҐГІГ·ГЁГЄ ГЁГІГҐГ°Г ГІГ®Г°Г  Г¤Г®Г±ГІГЁГЈГ ГҐГІ Г®ГЇГ°ГҐГ¤ГҐГ«ГҐГ­Г­Г®ГЈГ® Г§Г­Г Г·ГҐГ­ГЁГї.\n";
+			cout << "\nГ‚Г»ГЎГҐГ°ГҐГІГҐ Г±Г¶ГҐГ­Г Г°ГЁГ©: "; cin >> scenario;
 
-			//Конечные значения для сценариев.
+			//ГЉГ®Г­ГҐГ·Г­Г»ГҐ Г§Г­Г Г·ГҐГ­ГЁГї Г¤Г«Гї Г±Г¶ГҐГ­Г Г°ГЁГҐГў.
 
 			int radend;
 			int x0end;
@@ -1543,52 +1508,52 @@ int main(int argc, char** argv)
 
 			if (scenario == 1 or scenario == 2) 
 			{ 
-				cout << "Введите конечный радиус: "; cin >> radend; 
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г»Г© Г°Г Г¤ГЁГіГ±: "; cin >> radend; 
 			}
 			if (scenario == 3 or scenario == 4) 
 			{ 
-				cout << "Введите конечную координату x: "; cin >> x0end; 
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­ГіГѕ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГі x: "; cin >> x0end; 
 			}
 			if (scenario == 5 or scenario == 6) 
 			{ 
-				cout << "Введите конечную координату y: "; cin >> y0end; 
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­ГіГѕ ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГі y: "; cin >> y0end; 
 			}
 			if (scenario == 7 or scenario == 8) 
 			{ 
-				cout << "Введите конечное значение R: "; cin >> Rend;
-				cout << "Введите конечное значение G: "; cin >> Gend;
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 9 or scenario == 10)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
-				cout << "Введите конечное значение G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
 			}
 			if (scenario == 11 or scenario == 12)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 13 or scenario == 14)
 			{
-				cout << "Введите конечное значение G: "; cin >> Gend;
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 15 or scenario == 16)
 			{
-				cout << "Введите конечное значение R: "; cin >> Rend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ R: "; cin >> Rend;
 			}
 			if (scenario == 17 or scenario == 18)
 			{
-				cout << "Введите конечное значение G: "; cin >> Gend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ G: "; cin >> Gend;
 			}
 			if (scenario == 19 or scenario == 20)
 			{
-				cout << "Введите конечное значение B: "; cin >> Bend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г­ГҐГ·Г­Г®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ B: "; cin >> Bend;
 			}
 			if (scenario == 21)
 			{
-				cout << "Введите количество повторений: "; cin >> Iterend;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЇГ®ГўГІГ®Г°ГҐГ­ГЁГ©: "; cin >> Iterend;
 			}
 
 			int stepX0 = 0;
@@ -1605,63 +1570,63 @@ int main(int argc, char** argv)
 			double cGA, cGB, cGC;
 			double cBA, cBB, cBC;
 
-			bool ez; cout << "\nХотите использовать в рисовании линейные преобразования или сложные формулы? (1 или 0): "; cin >> ez;
-			cout << "\nЗнак следующих переменных имеет большое значение и определяет направление изменения!\n\n";
+			bool ez; cout << "\nГ•Г®ГІГЁГІГҐ ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ ГІГј Гў Г°ГЁГ±Г®ГўГ Г­ГЁГЁ Г«ГЁГ­ГҐГ©Г­Г»ГҐ ГЇГ°ГҐГ®ГЎГ°Г Г§Г®ГўГ Г­ГЁГї ГЁГ«ГЁ Г±Г«Г®Г¦Г­Г»ГҐ ГґГ®Г°Г¬ГіГ«Г»? (1 ГЁГ«ГЁ 0): "; cin >> ez;
+			cout << "\nГ‡Г­Г ГЄ Г±Г«ГҐГ¤ГіГѕГ№ГЁГµ ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»Гµ ГЁГ¬ГҐГҐГІ ГЎГ®Г«ГјГёГ®ГҐ Г§Г­Г Г·ГҐГ­ГЁГҐ ГЁ Г®ГЇГ°ГҐГ¤ГҐГ«ГїГҐГІ Г­Г ГЇГ°Г ГўГ«ГҐГ­ГЁГҐ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї!\n\n";
 			if (ez)
 			{
-				cout << "Введите stepX0 (шаг изменения координаты x центра окружности): "; cin >> stepX0;
-				cout << "Введите stepY0 (шаг изменения координаты y центра окружности): "; cin >> stepY0;
-				cout << "Введите stepR (шаг изменения радиуса окружности): "; cin >> stepR;
-				cout << "Введите stepColorR (шаг изменения красного спектра цвета): "; cin >> stepColorR;
-				cout << "Введите stepColorG (шаг изменения зелёного спектра цвета): "; cin >> stepColorG;
-				cout << "Введите stepColorB (шаг изменения синего спектра цвета): "; cin >> stepColorB;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepX0 (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» x Г¶ГҐГ­ГІГ°Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepX0;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepY0 (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЄГ®Г®Г°Г¤ГЁГ­Г ГІГ» y Г¶ГҐГ­ГІГ°Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepY0;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepR (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г°Г Г¤ГЁГіГ±Г  Г®ГЄГ°ГіГ¦Г­Г®Г±ГІГЁ): "; cin >> stepR;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepColorR (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї ГЄГ°Г Г±Г­Г®ГЈГ® Г±ГЇГҐГЄГІГ°Г  Г¶ГўГҐГІГ ): "; cin >> stepColorR;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepColorG (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г§ГҐГ«ЕѕГ­Г®ГЈГ® Г±ГЇГҐГЄГІГ°Г  Г¶ГўГҐГІГ ): "; cin >> stepColorG;
+				cout << "Г‚ГўГҐГ¤ГЁГІГҐ stepColorB (ГёГ ГЈ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї Г±ГЁГ­ГҐГЈГ® Г±ГЇГҐГЄГІГ°Г  Г¶ГўГҐГІГ ): "; cin >> stepColorB;
 			}
 			else
 			{
-				cout << "\nФормула для x0:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї x0:\n";
 				cout << "x0=round(pow(A*x0, B)+C)\n";
 				cout << "A = "; cin >> x0A;
 				cout << "B = "; cin >> x0B;
 				cout << "C = "; cin >> x0C;
 
-				cout << "\nФормула для y0:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї y0:\n";
 				cout << "y0=round(pow(A*y0, B)+C)\n";
 				cout << "A = "; cin >> y0A;
 				cout << "B = "; cin >> y0B;
 				cout << "C = "; cin >> y0C;
 
-				cout << "\nФормула для R:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї R:\n";
 				cout << "R=round(pow(A*R, B)+C)\n";
 				cout << "A = "; cin >> RA;
 				cout << "B = "; cin >> RB;
 				cout << "C = "; cin >> RC;
 
-				cout << "\nФормула для color.r:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї color.r:\n";
 				cout << "color.r=round(pow(A*color.r, B)+C)\n";
 				cout << "A = "; cin >> cRA;
 				cout << "B = "; cin >> cRB;
 				cout << "C = "; cin >> cRC;
 
-				cout << "\nФормула для color.g:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї color.g:\n";
 				cout << "color.g=round(pow(A*color.g, B)+C)\n";
 				cout << "A = "; cin >> cGA;
 				cout << "B = "; cin >> cGB;
 				cout << "C = "; cin >> cGC;
 
-				cout << "\nФормула для color.b:\n";
+				cout << "\nГ”Г®Г°Г¬ГіГ«Г  Г¤Г«Гї color.b:\n";
 				cout << "color.b=round(pow(A*color.b, B)+C)\n";
 				cout << "A = "; cin >> cBA;
 				cout << "B = "; cin >> cBB;
 				cout << "C = "; cin >> cBC;
 			}
 
-			cout << "\nЕсли что-то пошло не по плану и получился бесконечный цикл, используйте сочитание клавиш Ctrl+C.\n";
+			cout << "\nГ…Г±Г«ГЁ Г·ГІГ®-ГІГ® ГЇГ®ГёГ«Г® Г­ГҐ ГЇГ® ГЇГ«Г Г­Гі ГЁ ГЇГ®Г«ГіГ·ГЁГ«Г±Гї ГЎГҐГ±ГЄГ®Г­ГҐГ·Г­Г»Г© Г¶ГЁГЄГ«, ГЁГ±ГЇГ®Г«ГјГ§ГіГ©ГІГҐ Г±Г®Г·ГЁГІГ Г­ГЁГҐ ГЄГ«Г ГўГЁГё Ctrl+C.\n";
 
 			if (scenario == 1)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					R > radend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					R > radend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1677,9 +1642,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 2)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					R < radend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					R < radend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1695,9 +1660,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 3)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					x0 >= x0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					x0 >= x0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1713,9 +1678,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 4)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					x0 <= x0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					x0 <= x0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1731,9 +1696,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 5)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					y0 >= y0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					y0 >= y0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1749,9 +1714,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 6)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					y0 <= y0end; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					y0 <= y0end; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1767,9 +1732,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 7)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.r >= Rend && color.g >= Gend && color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend && color.g >= Gend && color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1785,9 +1750,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 8)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.r <= Rend && color.g <= Gend && color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend && color.g <= Gend && color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1803,9 +1768,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 9)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.r >= Rend && color.g >= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend && color.g >= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1821,9 +1786,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 10)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.r <= Rend && color.g <= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend && color.g <= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1839,9 +1804,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 11)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.r >= Rend && color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend && color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1857,9 +1822,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 12)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.r <= Rend && color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend && color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1875,9 +1840,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 13)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.g >= Gend && color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g >= Gend && color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1893,9 +1858,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 14)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.g <= Gend && color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g <= Gend && color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1911,9 +1876,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 15)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.r >= Rend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r >= Rend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1929,9 +1894,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 16)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.r <= Rend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.r <= Rend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1947,9 +1912,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 17)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.g >= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g >= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1965,9 +1930,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 18)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.g <= Gend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.g <= Gend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -1983,9 +1948,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 19)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.b >= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.b >= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -2001,9 +1966,9 @@ int main(int argc, char** argv)
 			}
 			if (scenario == 20)
 			{
-				for (x0, y0, R, color.r, color.g, color.b; // переменные
-					color.b <= Bend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					color.b <= Bend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)
@@ -2020,9 +1985,9 @@ int main(int argc, char** argv)
 			if (scenario == 21)
 			{
 				int iteration = 0;
-				for (x0, y0, R, color.r, color.g, color.b, iteration ; // переменные
-					iteration < Iterend; // условия
-					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, iteration++) // шаги изменения
+				for (x0, y0, R, color.r, color.g, color.b, iteration ; // ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ
+					iteration < Iterend; // ГіГ±Г«Г®ГўГЁГї
+					R += stepR, x0 += stepX0, y0 += stepY0, color.r += stepColorR, color.g += stepColorG, color.b += stepColorB, iteration++) // ГёГ ГЈГЁ ГЁГ§Г¬ГҐГ­ГҐГ­ГЁГї
 				{
 					filledcircle(x0, y0, R, color);
 					if (!ez)

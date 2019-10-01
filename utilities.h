@@ -1,14 +1,13 @@
 #pragma once
-#pragma warning(disable : 4996)
+#pragma warning(disable : 4996) //(РѕС‚Р»СЋС‡РµРЅРёРµ РѕС€РёР±РєРё РёР· visual studio)
 
+// #include "stdafx.h" (РЅyР¶РЅРѕ С‚РѕР»СЊРєРѕ РґР»СЏ visual studio)
 #include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
 using namespace std;
-struct pixel
-{
-	unsigned char b;
-	unsigned char g;
-	unsigned char r;
-};
 
 #pragma pack(push, 1)
 struct head
@@ -24,16 +23,26 @@ struct head
 };
 #pragma pack(pop)
 
+struct pixel
+{
+	unsigned char b;
+	unsigned char g;
+	unsigned char r;
+};
+
+struct pointOfPixel
+{
+	double x;
+	double y;
+};
+
 struct pixel **p_in;
 struct pixel **p_out;
 struct head h_bmp;
 char *infile;
 char *outfile;
 
-void resizev(int);
-void resizeh(int);
-void rotater();
-void rotatel();
+
 int get_pad(int);
 void read_file();
 void write_file();
@@ -52,144 +61,6 @@ int padding(int width)
 	while (width % 4 == 0)
 		i++;
 	return i;
-}
-
-void resizev(int pers)
-{
-	if (pers == 0)
-	{
-		read_file();
-		p_out = p_in;
-		write_file();
-		return;
-	}
-
-	read_file();
-	int x = 100 / pers;
-	int c = 0;
-	//На сколько увеличится ширина
-	for (int i = 0; i < h_bmp.height; i++)
-		if (i%x == 0)
-			c++;
-
-	p_out = new struct pixel*[h_bmp.height + c];
-
-	int m = 0, n;
-	for (int i = 0; i < h_bmp.height; i++)
-	{
-		n = 0;
-		if (i%x == 0)
-		{
-			if (pers > 0)
-			{
-				p_out[m] = new struct pixel[h_bmp.width];
-				for (int j = 0; j < h_bmp.width; j++)
-				{
-					p_out[m][n] = p_in[i][j];
-					n++;
-				}
-				m++;
-				n = 0;
-			}
-
-			if (pers < 0)
-				continue;
-		}
-
-		p_out[m] = new struct pixel[h_bmp.width];
-
-		for (int j = 0; j < h_bmp.width; j++)
-		{
-			p_out[m][n] = p_in[i][j];
-			n++;
-		}
-		m++;
-	}
-	h_bmp.height = m;
-
-	write_file();
-}
-
-
-
-void resizeh(int pers)
-{
-	if (pers == 0)
-	{
-		read_file();
-		p_out = p_in;
-		write_file();
-		return;
-	}
-
-	read_file();
-	int x = 100 / pers;
-	int c = 0;
-	//На сколько увеличится ширина
-	for (int i = 0; i < h_bmp.width; i++)
-		if (i%x == 0)
-			c++;
-
-	p_out = new struct pixel*[h_bmp.height];
-
-	int m = 0, n;
-	for (int i = 0; i < h_bmp.height; i++)
-	{
-		n = 0;
-		p_out[m] = new struct pixel[h_bmp.width + c];
-		for (int j = 0; j < h_bmp.width; j++)
-		{
-			if (j%x == 0)
-			{
-				if (pers > 0)
-				{
-					p_out[m][n] = p_in[i][j];
-					n++;
-				}
-				if (pers < 0)
-					continue;
-			}
-			p_out[m][n] = p_in[i][j];
-			n++;
-		}
-		m++;
-	}
-	h_bmp.width = n;
-	write_file();
-}
-
-void rotater()
-{
-	read_file();
-	p_out = new struct pixel*[h_bmp.width];
-	for (int i = 0; i < h_bmp.width; i++)
-		p_out[i] = new struct pixel[h_bmp.height];
-
-	for (int i = 0; i < h_bmp.height; i++)
-		for (int j = 0; j < h_bmp.width; j++)
-			p_out[j][i] = p_in[i][j];
-
-	int tmp = h_bmp.height;
-	h_bmp.height = h_bmp.width;
-	h_bmp.width = tmp;
-	write_file();
-}
-
-void rotatel()
-{
-	read_file();
-	p_out = new struct pixel*[h_bmp.width];
-	for (int i = 0; i < h_bmp.width; i++)
-		p_out[i] = new struct pixel[h_bmp.height];
-
-	for (int i = 0; i < h_bmp.height; i++)
-		for (int j = 0; j < h_bmp.width; j++)
-			p_out[j][i] = p_in[h_bmp.height - i - 1][j];
-
-	int tmp = h_bmp.height;
-	h_bmp.height = h_bmp.width;
-	h_bmp.width = tmp;
-	write_file();
 }
 
 void read_file()
