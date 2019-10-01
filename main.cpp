@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "konstantinov.h"
 #include "kharitonova.h"
 #include "vershinin.h"
 #include "zachynyaev.h"
