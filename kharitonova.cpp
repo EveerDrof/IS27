@@ -3,7 +3,6 @@
 using namespace std;
 pixel blackPix{ 0,0,0 };
 
-
 void horizontalLine(int posX)
 {
 	for (int I = 0; I < h_bmp.width; I++)

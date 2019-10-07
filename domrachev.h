@@ -1,11 +1,12 @@
+#pragma once
 #include "utilities.h"
 
-void ResizeHeight(int);
-void ResizeWidht(int);
-void RotateRight();
-void RotateLeft();
+void resizeHeight(int);
+void resizeWidth(int);
+void rotateRight();
+void rotateLeft();
 
-void ResizeHeight(int pers)
+void resizeHeight(int pers)
 {
 	if (pers == 0)
 	{
@@ -62,7 +63,7 @@ void ResizeHeight(int pers)
 
 
 
-void resizeh(int pers)
+void resizeWidth(int pers)
 {
 	if (pers == 0)
 	{
@@ -107,7 +108,7 @@ void resizeh(int pers)
 	write_file();
 }
 
-void rotater()
+void rotateRight()
 {
 	read_file();
 	p_out = new struct pixel*[h_bmp.width];
@@ -124,7 +125,7 @@ void rotater()
 	write_file();
 }
 
-void rotatel()
+void rotateLeft()
 {
 	read_file();
 	p_out = new struct pixel*[h_bmp.width];

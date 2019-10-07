@@ -1,12 +1,7 @@
+#pragma once
 #include "utilities.h"
 
 void cutFromPic(struct pointOfPixel, struct pointOfPixel);
-
-struct pointOfPixel   
-{
-	double x;
-	double y;
-};
 
 void cutFromPic(struct pointOfPixel point1, struct pointOfPixel point2)
 {

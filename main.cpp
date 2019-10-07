@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-#include "kharitonova.h"
-#include "vershinin.h"
-#include "zachynyaev.h"
+#include <iostream>
+#include "AllFunctions.h"
+#include "domrachev.h"
+#include "utilities.h"
+using namespace std;
 void help()
 {
     cout << "\nusage: \n";
@@ -53,7 +54,7 @@ int main(int argc, char** argv)
 		 }
 		infile=argv[3];
 		outfile=argv[4];
-		resizev(pers);
+		resizeHeight(pers);
     }
 
     if(!strcmp(argv[1],"resizeh"))
@@ -66,7 +67,7 @@ int main(int argc, char** argv)
 		}
 		infile=argv[3];
 		outfile=argv[4];
-		resizeh(pers);
+		resizeWidth(pers);
     }
 
     if(!strcmp(argv[1],"rotater"))
@@ -78,7 +79,7 @@ int main(int argc, char** argv)
 		}
 		infile=argv[2];
 		outfile=argv[3];
-		rotater();
+		rotateRight();
     }
 
     if(!strcmp(argv[1],"rotatel"))
@@ -90,7 +91,7 @@ int main(int argc, char** argv)
 		}
 		infile=argv[2];
 		outfile=argv[3];
-		rotatel();
+		rotateLeft();
     }
 	//Konstantinov
 	if (!strcmp(argv[1], "chb"))
@@ -109,24 +110,12 @@ int main(int argc, char** argv)
 	{
 		infile = argv[2];
 		outfile = argv[3];
-		Color COL;
-		Color COL2;
 		if (argc < 6)
 		{
 			help();
 			return 1;
 		}
-		COL = Color_Check(argv[5]);
-		if (argc == 6)
-		{
-			COL2 = COL;
-			raskras(true, atoi(argv[4]), COL, COL2);
-		}
-		else
-		{
-			COL2 = Color_Check(argv[6]);
-			raskras(false, atoi(argv[4]), COL, COL2);
-		}
+		raskras(argc,argv);
 
 	}			
 	if (!strcmp(argv[1], "limitcolors"))
@@ -141,6 +130,7 @@ int main(int argc, char** argv)
 			limitcolors(atoi(argv[4]));
 
 		}
+		//Kharitonova
 	if (!strcmp(argv[1], "numtopic"))
 	{
 		if (argc < 3)
@@ -151,6 +141,7 @@ int main(int argc, char** argv)
 		NumToPic(argv);
 
 	}
+	//Vershinin
 	if (!strcmp(argv[1], "cutfrompic"))
 	{
 		struct pointOfPixel point1, point2;
@@ -165,6 +156,7 @@ int main(int argc, char** argv)
 		cutFromPic(point1, point2);
 		return 0;
 	}
+	//Zachynyaev
 	if (!strcmp(argv[1], "cutsizev"))
 	{
 		

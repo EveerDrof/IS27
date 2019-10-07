@@ -1,7 +1,5 @@
+#pragma once
 #include "utilities.h"
-void chb();
-void raskras(bool, int, enum Color, enum Color);
-void limitcolors(int);
 enum Color { RED, BLUE, GREEN, GRAY };
 Color Color_Check(char *CN);
 void Prepare();
@@ -28,9 +26,20 @@ void chb()
 		}
 	write_file();
 }
-void raskras(bool ONE, int Colors, Color COL, Color COL2)
+void raskras(int argc,char **argv)
 {
-	int Dif = 255 / Colors;
+	Color COL;
+	Color COL2;
+	COL = Color_Check(argv[5]);
+	if (argc == 6)
+		{
+			COL2 = COL;
+		}
+		else
+		{
+			COL2 = Color_Check(argv[6]);
+		}
+	int Dif = 255 / atoi(argv[4]);
 	Prepare();
 	struct pixel *P;
 	for (int i = 0; i < h_bmp.height; i++)
@@ -46,7 +55,7 @@ void raskras(bool ONE, int Colors, Color COL, Color COL2)
 			P = &p_out[i][j];
 			S = NearColor(S, Dif);
 			for (I; I*Dif < S; I++);
-			if (ONE)
+			if (argc==6)
 			{
 				PaintPixel(COL, S, P);
 			}
