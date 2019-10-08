@@ -27,6 +27,17 @@ struct pixel
 	unsigned char b;
 	unsigned char g;
 	unsigned char r;
+	bool operator==(pixel &pix)
+	{
+		if ((b == pix.b) && (g == pix.g) && (r == pix.r))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 };
 
 struct pointOfPixel
