@@ -38,8 +38,12 @@ int main(int argc, char** argv)
 		&& strcmp(argv[1], "cutfrompic")
 		//Zachynyaev
 		&& strcmp(argv[1], "cutsizeh")
-		&& strcmp(argv[1], "cutsizev"))
+		&& strcmp(argv[1], "cutsizev")
+		//Smirnov
+		&& strcmp(argv[1], "comparePics")
+)
     {
+
 		help();
 		return 1;
     }
@@ -181,6 +185,10 @@ int main(int argc, char** argv)
 			return 1;
 		}
 		cutsizeh(pers);
+	}
+	if (!strcmp(argv[1], "comparePics"))
+	{
+		comparePics(argc,argv);
 	}
 
     return 0;

@@ -11,4 +11,5 @@ void cutFromPic(struct pointOfPixel, struct pointOfPixel);
 //Zachynyaev
 void cutsizev(int pers);
 void cutsizeh(int pers);
+int comparePics(int argc, char** argv);
 
