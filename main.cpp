@@ -41,6 +41,8 @@ int main(int argc, char** argv)
 		&& strcmp(argv[1], "cutsizev")
 		//Smirnov
 		&& strcmp(argv[1], "comparePics")
+		//Ramazanov
+		&& strcmp(argv[1], "checkLines")
 )
     {
 
@@ -189,6 +191,10 @@ int main(int argc, char** argv)
 	if (!strcmp(argv[1], "comparePics"))
 	{
 		comparePics(argc,argv);
+	}
+	if (!strcmp(argv[1], "checkLines"))
+	{
+		checkLines(argc,argv);
 	}
 
     return 0;
