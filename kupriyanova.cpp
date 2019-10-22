@@ -1,3 +1,5 @@
+#include <iostream>
+#include "utilities.h"
 void wd()
 {
 	cout<<"Высота="<<h_bmp.height;

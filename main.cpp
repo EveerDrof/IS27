@@ -43,6 +43,7 @@ int main(int argc, char** argv)
 		&& strcmp(argv[1], "comparePics")
 		//Ramazanov
 		&& strcmp(argv[1], "checkLines")
+		&& strcmp(argv[1],"wh")
 )
     {
 
@@ -195,6 +196,16 @@ int main(int argc, char** argv)
 	if (!strcmp(argv[1], "checkLines"))
 	{
 		checkLines(argc,argv);
+	}
+//Kupriyanova
+if (!strcmp(argv[1], "wh"))
+	{
+		wd();
+	}
+//Lalikin
+if (!strcmp(argv[1], "glue"))
+	{
+		Glue();
 	}
 
     return 0;

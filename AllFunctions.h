@@ -13,4 +13,8 @@ void cutsizev(int pers);
 void cutsizeh(int pers);
 int comparePics(int argc, char** argv);
 //Ramazanov
-int checkLines(int argc, char** argv)
+int checkLines(int argc, char** argv);
+//Kupriyanova
+void wd();
+//Lalikin
+void Glue();
