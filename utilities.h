@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
+//#include <math.h>
+#include <cmath>
 using namespace std;
 
 #pragma pack(push, 1)
@@ -27,6 +28,17 @@ struct pixel
 	unsigned char b;
 	unsigned char g;
 	unsigned char r;
+	bool operator==(pixel &pix)
+	{
+		if ((b == pix.b) && (g == pix.g) && (r == pix.r))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 };
 
 struct pointOfPixel
