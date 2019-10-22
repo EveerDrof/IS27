@@ -18,3 +18,7 @@ int checkLines(int argc, char** argv);
 void wd();
 //Lalikin
 void Glue();
+//Psgenichnikov
+void comparison();
+//Babaev
+int babaev(int argc, char** argv);

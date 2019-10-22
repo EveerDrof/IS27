@@ -207,6 +207,19 @@ if (!strcmp(argv[1], "glue"))
 	{
 		Glue();
 	}
-
+//Pshenichnikov
+if (!strcmp(argv[1], "comparison"))
+	{
+		comparison();
+	}
+//Babaev
+if (!(strcmp(argv[1], "lineshort"     ) &&
+		strcmp(argv[1], "lineinf"       ) &&
+		strcmp(argv[1], "circle"        ) &&
+		strcmp(argv[1], "circle2"       ) &&
+		strcmp(argv[1], "filledcircle"  )   ))
+    {
+		babaev(argc,argv);
+    }
     return 0;
 }

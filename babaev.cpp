@@ -1,5 +1,4 @@
 #include "utilities.h"
-
 struct pixel **p_in; 
 struct pixel **p_out; 
 struct head h_bmp;
@@ -43,7 +42,7 @@ void help()
 	system("Pause");
 }
 
-int main(int argc, char** argv)
+int babaev(int argc, char** argv)
 {
 	setlocale(0, "");
 
