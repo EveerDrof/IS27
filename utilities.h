@@ -10,6 +10,11 @@
 using namespace std;
 
 #pragma pack(push, 1)
+struct picture
+{
+head h_bmp;
+pixel **arr;
+}
 struct head
 {
 	char type[2];

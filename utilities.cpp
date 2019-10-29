@@ -1,10 +1,6 @@
 #include "utilities.h"
+
 using namespace std;
- struct pixel **p_in;
- struct pixel **p_out;
- struct head h_bmp;
- char *infile;
- char *outfile;
 int get_pad(int width)
 {
 	int i = 0;
@@ -21,7 +17,7 @@ int padding(int width)
 	return i;
 }
 
-void read_file()
+head read_file(char *infile,picture &pic)
 {
 	long int count = 0;
 	int i, j, n;
@@ -46,9 +42,10 @@ void read_file()
 			fread(buf, pad, 1, fd);
 	}
 	fclose(fd);
+	return h_bmp;
 }
 
-void write_file()
+void write_file(char *outfile,head h_bmp,pixel **p_out)
 {
 	int i, j;
 	struct pixel buf[4];
