@@ -1,20 +1,16 @@
 #pragma once
 #include "utilities.h"
 enum Color { RED, BLUE, GREEN, GRAY };
-Color Color_Check(char *CN);
-void Prepare();
+Color Color_Check(const char *CN);
 void PaintPixel(enum Color, int, struct pixel*);
 int NearColor(int, int);
-void chb()
+void chb(picture &pic)
 {
-	Prepare();
 	struct pixel *P;
-	for (int i = 0; i < h_bmp.height; i++)
-		for (int j = 0; j < h_bmp.width; j++)
-
+	for (int i = 0; i < pic.h_bmp.height; i++)
+		for (int j = 0; j < pic.h_bmp.width; j++)
 		{
-			p_out[i][j] = p_in[i][j];
-			P = &p_out[i][j];
+			P = &pic.arr[i][j];
 			int S = 0;
 			if (S < P->b)S = P->b;
 			if (S < P->b)S = P->r;
@@ -24,38 +20,36 @@ void chb()
 			P->r = S;
 
 		}
-	write_file();
 }
-void raskras(int argc,char **argv)
+void raskras(picture &pic,int colvo,const char  *firstcolor,const char *secondcolor)
 {
 	Color COL;
 	Color COL2;
-	COL = Color_Check(argv[5]);
-	if (argc == 6)
+	COL = Color_Check(firstcolor);
+	if (secondcolor == "NULL")
 		{
 			COL2 = COL;
 		}
 		else
 		{
-			COL2 = Color_Check(argv[6]);
+			COL2 = Color_Check(secondcolor);
 		}
-	int Dif = 255 / atoi(argv[4]);
-	Prepare();
+	int Dif = 255 / colvo;
 	struct pixel *P;
-	for (int i = 0; i < h_bmp.height; i++)
-		for (int j = 0; j < h_bmp.width; j++)
+	for (int i = 0; i < pic.h_bmp.height; i++)
+		for (int j = 0; j < pic.h_bmp.width; j++)
 
 		{
 			int S = 0;
-			if (S < p_in[i][j].g)S = p_in[i][j].g;
-			if (S < p_in[i][j].b)S = p_in[i][j].b;
-			if (S < p_in[i][j].r)S = p_in[i][j].r;
+			if (S < pic.arr[i][j].g)S = pic.arr[i][j].g;
+			if (S < pic.arr[i][j].b)S = pic.arr[i][j].b;
+			if (S < pic.arr[i][j].r)S = pic.arr[i][j].r;
 
 			int I = 0;
-			P = &p_out[i][j];
+			P = &pic.arr[i][j];
 			S = NearColor(S, Dif);
 			for (I; I*Dif < S; I++);
-			if (argc==6)
+			if (secondcolor=="Null")
 			{
 				PaintPixel(COL, S, P);
 			}
@@ -72,20 +66,17 @@ void raskras(int argc,char **argv)
 			}
 
 		}
-	write_file();
 }
-void limitcolors(int Colors)
+void limitcolors(int Colors,picture &pic)
 {
 	int Dif = 255 / (Colors - 1);
-	Prepare();
-	for (int i = 0; i < h_bmp.height; i++)
-		for (int j = 0; j < h_bmp.width; j++)
+	for (int i = 0; i < pic.h_bmp.height; i++)
+		for (int j = 0; j < pic.h_bmp.width; j++)
 		{
-			p_out[i][j].b = NearColor(p_in[i][j].b, Dif);
-			p_out[i][j].g = NearColor(p_in[i][j].g, Dif);
-			p_out[i][j].r = NearColor(p_in[i][j].r, Dif);
+			pic.arr[i][j].b = NearColor(pic.arr[i][j].b, Dif);
+			pic.arr[i][j].g = NearColor(pic.arr[i][j].g, Dif);
+			pic.arr[i][j].r = NearColor(pic.arr[i][j].r, Dif);
 		}
-	write_file();
 }
 void PaintPixel(Color COL, int S, struct pixel *P)
 {
@@ -113,13 +104,6 @@ void PaintPixel(Color COL, int S, struct pixel *P)
 		break;
 	}
 }
-void Prepare()
-{
-	read_file();
-	p_out = new struct pixel*[h_bmp.height];
-	for (int i = 0; i < h_bmp.height; i++)
-		p_out[i] = new struct pixel[h_bmp.width];
-}
 int NearColor(int C, int Dif)
 {
 	int K = 0;
@@ -136,7 +120,7 @@ int NearColor(int C, int Dif)
 		return K * Dif > 255 ? 255 : K * Dif;
 	}
 }
-Color Color_Check(char *CN)
+Color Color_Check(const char *CN)
 {
 	Color COL;
 	if (!strcmp(CN, "GREEN"))

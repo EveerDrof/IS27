@@ -17,7 +17,7 @@ int padding(int width)
 	return i;
 }
 
-head read_file(char *infile,picture &pic)
+void read_file(const char *infile,picture &pic)
 {
 	long int count = 0;
 	int i, j, n;
@@ -28,24 +28,23 @@ head read_file(char *infile,picture &pic)
 		perror("open file for read");
 		exit(1);
 	}
-	fread(&h_bmp, sizeof(struct head), 1, fd);
-	int pad = get_pad(h_bmp.width);
-	p_in = new struct pixel*[h_bmp.height];
-	for (i = 0; i < h_bmp.height; i++)
+	fread(&pic.h_bmp, sizeof(struct head), 1, fd);
+	int pad = get_pad(pic.h_bmp.width);
+	pic.arr = new struct pixel*[pic.h_bmp.height];
+	for (i = 0; i < pic.h_bmp.height; i++)
 	{
-		p_in[i] = new struct pixel[h_bmp.width];
-		for (j = 0; j < h_bmp.width; j++)
+		pic.arr[i] = new struct pixel[pic.h_bmp.width];
+		for (j = 0; j < pic.h_bmp.width; j++)
 		{
-			n = fread(&p_in[i][j], 3, 1, fd);
+			n = fread(&pic.arr[i][j], 3, 1, fd);
 		}
 		if (pad != 0)
 			fread(buf, pad, 1, fd);
 	}
 	fclose(fd);
-	return h_bmp;
 }
 
-void write_file(char *outfile,head h_bmp,pixel **p_out)
+void write_file(const char *outfile,picture &pic)
 {
 	int i, j;
 	struct pixel buf[4];
@@ -55,12 +54,12 @@ void write_file(char *outfile,head h_bmp,pixel **p_out)
 		perror("open file for write");
 		exit(1);
 	}
-	fwrite(&h_bmp, sizeof(struct head), 1, fd);
-	int pad = get_pad(h_bmp.width);
-	for (i = 0; i < h_bmp.height; i++)
+	fwrite(&pic.h_bmp, sizeof(struct head), 1, fd);
+	int pad = get_pad(pic.h_bmp.width);
+	for (i = 0; i < pic.h_bmp.height; i++)
 	{
-		for (j = 0; j < h_bmp.width; j++)
-			fwrite(&p_out[i][j], 3, 1, fd);
+		for (j = 0; j < pic.h_bmp.width; j++)
+			fwrite(&pic.arr[i][j], 3, 1, fd);
 		if (pad != 0)
 			fwrite(buf, pad, 1, fd);
 	}

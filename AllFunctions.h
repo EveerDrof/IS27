@@ -1,9 +1,9 @@
 #pragma once
 #pragma warning(disable : 4996)
 //Konstantinov
-void chb();
-void raskras(int argc,char **argv);
-void limitcolors(int);
+void chb(picture &pic);
+void raskras(picture &pic, int colvo,const char  *firstcolor,const char *secondcolor);
+void limitcolors(int Colors, picture &pic);
 //Kharitonova
 int NumToPic(char** argv);
 //Vershinin

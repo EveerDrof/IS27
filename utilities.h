@@ -10,11 +10,6 @@
 using namespace std;
 
 #pragma pack(push, 1)
-struct picture
-{
-head h_bmp;
-pixel **arr;
-}
 struct head
 {
 	char type[2];
@@ -45,6 +40,11 @@ struct pixel
 		}
 	}
 };
+struct picture
+{
+	head h_bmp;
+	pixel **arr;
+};
 
 struct pointOfPixel
 {
@@ -52,21 +52,15 @@ struct pointOfPixel
 	double y;
 };
 
- extern struct pixel **p_in;
- extern struct pixel **p_out;
- extern struct head h_bmp;
- extern char *infile;
- extern char *outfile;
+
 
 
 int get_pad(int);
-void read_file();
-void write_file();
 
 int get_pad(int width);
 
 int padding(int width);
 
-void read_file();
+void read_file(const char *infile, picture &pic);
 
-void write_file();
+void write_file(const char *outfile, picture &pic);
