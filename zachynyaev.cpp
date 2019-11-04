@@ -1,11 +1,10 @@
 #pragma once
 #include "utilities.h"
-void cutsizev(int pers)
+void cutsizev(picture &pic ,int pers)
 {
-	read_file();
-	if (pers == 0)
+	if (pers <= 0 )
 	{
-		p_out = p_in;
+		return;
 	}
 	else
 	{
@@ -13,87 +12,78 @@ void cutsizev(int pers)
 		int x = 100 / pers;
 		int c = 0;
 
-		for (int i = 0; i < h_bmp.height; i++)
+		for (int i = 0; i < pic.h_bmp.height; i++)
 			if (i%x == 0)
 				c++;
 
-		h_bmp.height -= c;
+		pic.h_bmp.height -= c;
 
-		p_out = new struct pixel*[h_bmp.height];
-
+		pixel **p_out = new struct pixel*[pic.h_bmp.height];
 		int m = 0, n;
-		if (pers < 0)
+		int C = 0;
+		for (int i = 0; i < pic.h_bmp.height + c; i++)
 		{
-			return;
-		}
-		else
-		{
-			int C = 0;
-			for (int i = 0; i < h_bmp.height + c; i++)
+			if (i%x == 0)
 			{
-				if (i%x == 0)
+				C++;
+			}
+			else
+			{
+
+				p_out[i - C] = new struct pixel[pic.h_bmp.width];
+				for (int j = 0; j < pic.h_bmp.width; j++)
+				{
+					p_out[i - C][j] = pic.arr[i][j];
+				}
+			}
+		}
+		for (int I = 0; I < pic.h_bmp.height + c;I++)
+		{
+			delete[] pic.arr[I];
+		}
+		delete[] pic.arr;
+		pic.arr = p_out;
+	}
+}
+void cutsizeh(picture &pic, int pers)
+{
+	if (pers <= 0)
+	{
+		return;
+	}
+	else
+	{
+		int x = 100 / pers;
+		int c = 0;
+
+		for (int i = 0; i < pic.h_bmp.width; i++)
+			if (i%x == 0)
+				c++;
+		pic.h_bmp.width -= c;
+		pixel **p_out = new struct pixel*[pic.h_bmp.height];
+		int m = 0, n;
+		int C = 0;
+		for (int i = 0; i < pic.h_bmp.height; i++)
+		{
+			p_out[i] = new struct pixel[pic.h_bmp.width];
+			C = 0;
+			for (int j = 0; j < pic.h_bmp.width+c; j++)
+			{
+				if (j%x == 0)
 				{
 					C++;
 				}
 				else
 				{
-
-					p_out[i - C] = new struct pixel[h_bmp.width];
-					for (int j = 0; j < h_bmp.width; j++)
-					{
-
-						p_out[i - C][j] = p_in[i][j];
-					}
+					p_out[i ][j- C] = pic.arr[i][j];
 				}
 			}
 		}
-	}
-	write_file();
-}
-void cutsizeh(int pers)
-{
-	read_file();
-	if (pers == 0)
-	{
-		p_out = p_in;
-	}
-	else
-	{
-		int x = 100 / pers;
-		int c = 0;
-		for (int i = 0; i < h_bmp.width; i++)
-			if (i%x == 0)
-				c++;
-		h_bmp.width -= c;
-		p_out = new struct pixel*[h_bmp.height];
-
-		int m = 0, n;
-		if (pers < 0)
+		for (int I = 0; I < pic.h_bmp.height; I++)
 		{
-			return;
+			delete[] pic.arr[I];
 		}
-		else
-		{
-
-			for (int i = 0; i < h_bmp.height; i++)
-			{
-				int C = 0;
-
-				p_out[i] = new struct pixel[h_bmp.width];
-				for (int j = 0; j < h_bmp.width + c; j++)
-				{
-					if (j%x == 0)
-					{
-						C++;
-					}
-					else
-					{
-						p_out[i][j - C] = p_in[i][j];
-					}
-				}
-			}
-		}
+		delete[] pic.arr;
+		pic.arr = p_out;
 	}
-	write_file();
 }
-

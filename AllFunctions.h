@@ -9,8 +9,8 @@ int NumToPic(char** argv);
 //Vershinin
 void cutFromPic(struct pointOfPixel, struct pointOfPixel);
 //Zachynyaev
-void cutsizev(int pers);
-void cutsizeh(int pers);
+void cutsizev(picture &pic, int pers);
+void cutsizeh(picture &pic, int pers);
 int comparePics(int argc, char** argv);
 //Ramazanov
 int checkLines(int argc, char** argv);
