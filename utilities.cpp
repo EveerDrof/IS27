@@ -30,7 +30,7 @@ void read_file(const char *infile,picture &pic)
 	}
 	fread(&pic.h_bmp, sizeof(struct head), 1, fd);
 	int pad = get_pad(pic.h_bmp.width);
-	pic.arr = new struct pixel*[pic.h_bmp.height];
+	pic.arr = new  pixel*[pic.h_bmp.height];
 	for (i = 0; i < pic.h_bmp.height; i++)
 	{
 		pic.arr[i] = new struct pixel[pic.h_bmp.width];
